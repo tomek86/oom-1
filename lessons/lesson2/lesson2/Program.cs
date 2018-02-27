@@ -7,7 +7,9 @@ namespace lesson2
 	{
 		public static void Main (string[] args)
 		{
-			var books = new []
+            var foo = new Book("Real-Time Rendering", "978-1568814247", 1, Currency.USD).GetPrice(Currency.EUR);
+
+            var books = new []
 			{
 				new Book("Real-Time Rendering", "978-1568814247", 78.95m, Currency.EUR),
 				new Book("The Hitchhiker's Guide to the Galaxy", "978-0345391803", 6.60m, Currency.EUR),

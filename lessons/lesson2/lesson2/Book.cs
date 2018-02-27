@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
@@ -48,23 +49,22 @@ namespace lesson2
 			// if the price is requested in it's own currency, then simply return the stored price
 			if (currency == Currency) return m_price;
 
-			// use web service to query current exchange rate
-			// request : http://download.finance.yahoo.com/d/quotes.csv?s=EURUSD=X&f=sl1d1t1c1ohgv&e=.csv
-			// response: "EURUSD=X",1.0930,"12/29/2015","6:06pm",-0.0043,1.0971,1.0995,1.0899,0
-			var key = string.Format("{0}{1}", Currency, currency); // e.g. EURUSD means "How much is 1 EUR in USD?".
+            var from = Currency.ToString();
+            var to = currency.ToString();
 
-			// create the request URL, ...
-			var url = string.Format(@"http://download.finance.yahoo.com/d/quotes.csv?s={0}=X&f=sl1d1t1c1ohgv&e=.csv", key);
-			// download the response as string
-			var data = new WebClient().DownloadString(url);
-			// split the string at ','
-			var parts = data.Split(',');
-			// convert the exchange rate part to a decimal 
-			var rate = decimal.Parse(parts[1], CultureInfo.InvariantCulture);
+            // use web service to query current exchange rate
+            // request : https://api.fixer.io/latest?base=EUR&symbols=USD
+            // response: {"base":"EUR","date":"2018-01-24","rates":{"USD":1.2352}}
+            var url = $"https://api.fixer.io/latest?base={from}&symbols={to}";
+            // download the response as string
+            var data = new WebClient().DownloadString(url);
+            // parse JSON
+            var json = JObject.Parse(data);
+            // convert the exchange rate part to a decimal 
+            var rate = decimal.Parse((string)json["rates"][to], CultureInfo.InvariantCulture);
 
-			// and finally perform the currency conversion
-			return m_price * rate;
-		}
+            return m_price * rate;
+        }
 
 		/// <summary>
 		/// Updates the book's price.
