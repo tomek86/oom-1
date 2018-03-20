@@ -73,7 +73,7 @@ namespace task2
             }
             else
             {
-                end = DateTime.Now;
+                end = DateTime.Now; 
             }
         }
 
