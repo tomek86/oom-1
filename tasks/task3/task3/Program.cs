@@ -137,9 +137,9 @@ namespace task3
                 }
             }
 
-            public void UpdatePrice()
+            public void UpdatePrice(decimal pPrice)
             {
-
+                price = pPrice;
             }
         }
 
@@ -213,7 +213,7 @@ namespace task3
         string Title { get; set; }
         decimal Price { get; set; }
 
-        void UpdatePrice();
+        void UpdatePrice(decimal pPrice);
     }
 
 
