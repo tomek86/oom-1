@@ -35,6 +35,7 @@ namespace task3
             private DateTime end;
             private Boolean borrowStatus;
             private Book borrowedBook;
+            private IItem borrowedItem;
 
             public Schedule(Book pBook)
             {
@@ -99,13 +100,56 @@ namespace task3
             }
         }
 
-        public class Book
+        public class Movie : IItem
+        {
+            private decimal price;
+            private string title;
+
+            public Movie (string title, decimal price)
+            {
+
+            }
+
+            public decimal Price
+            {
+                get // this code is executed when the value of a property is read
+                {
+                    return price;
+                }
+                set // this code is executed when a value is assigned to the property
+                {
+                    // the keyword 'value' represents the value that is assigned
+                    if (value < 0) throw new Exception("Price must not be negative.");
+                    price = value;
+                }
+            }
+
+            public string Title
+            {
+                get
+                {
+                    return title;
+                }
+
+                set
+                {
+                    title = value;
+                }
+            }
+
+            public void UpdatePrice()
+            {
+
+            }
+        }
+
+        public class Book : IItem
         {
             private decimal m_price;
             private string isbn;
             private string title;
 
-            public Book(string pIsbn, string pTitle, decimal pPrice)
+            public Book (string pIsbn, string pTitle, decimal pPrice)
             {
                 isbn = pIsbn;
                 title = pTitle;
@@ -156,16 +200,21 @@ namespace task3
                     title = value;
                 }
             }
+
+            public void UpdatePrice(decimal pPrice)
+            {
+                m_price = pPrice;
+            }
         }
     }
 
-    public interface ISchedule
+    public interface IItem
     {
-        void UpdateTask();
+        string Title { get; set; }
+        decimal Price { get; set; }
+
+        void UpdatePrice();
     }
 
-    public interface ITask
-    {
 
-    }
 }
